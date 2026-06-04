@@ -48,7 +48,11 @@ _YAS.trap("yasli", 50, 60, 80, 80)
 _SAAT = UyelikSet(np.arange(0, 24, 1))
 _SAAT.trap("gunduz", 6, 8, 17, 19)
 _SAAT.trim("aksam", 17, 20, 23)
-_SAAT.trap("gece", -1, -1, 5, 7)
+# Gece saatlerini kapsamak icin 0-7 araligi ile 20-23 araligini birlestiriyoruz (dairesel gecis)
+_SAAT.kumeler["gece"] = np.maximum(
+    fuzz.trapmf(_SAAT.evren, [-1, -1, 5, 7]),
+    fuzz.trapmf(_SAAT.evren, [20, 23, 24, 24])
+)
 
 _UYKU = UyelikSet(np.arange(0, 12.1, 0.1))
 _UYKU.trap("yetersiz", 0, 0, 4, 6)
